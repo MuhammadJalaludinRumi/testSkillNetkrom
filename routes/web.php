@@ -15,6 +15,15 @@ Route::post('/proses', [FormTiketController::class, 'process'])->name('tiket.pro
 Route::post('/check-payment', [FormTiketController::class, 'checkPayment'])->name('tiket.check_payment');
 Route::post('/reset', [FormTiketController::class, 'reset'])->name('tiket.reset');
 
+ //==============================
+// Hasil Pemesanan
+//===============================
+Route::get('/hasil', function () {
+    return view('hasil');
+})->name('tiket.result');
+
+
+
 // ==============================
 // Login & Register
 // ==============================
@@ -34,9 +43,6 @@ Route::post('/login-admin', [AdminLoginController::class, 'login'])->name('admin
 // Admin (dengan prefix dan auth)
 // ==============================
 Route::prefix('admin')->middleware('auth')->group(function () {
-    Route::get('/konser', function () {
-        return view('admin.konser');
-    });
 
     // pemesan
     Route::get('/pemesan', [AdminPemesanController::class, 'index'])->name('admin.pemesan.index');
@@ -49,17 +55,3 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('/checkin', [TiketController::class, 'processCheckin'])->name('checkin.process');
 });
 
-Route::get('/hasil', function () {
-    return view('hasil');
-})->name('tiket.result');
-
-
-// ==============================
-// User Area (butuh login)
-// ==============================
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
-    Route::get('/konser', [TiketController::class, 'daftarKonser'])->name('konser.index');
-    Route::get('/pesan/{id}', [TiketController::class, 'pesanTiket'])->name('tiket.pesan');
-    Route::get('/tiket-saya', [TiketController::class, 'tiketSaya'])->name('tiket.saya');
-});
